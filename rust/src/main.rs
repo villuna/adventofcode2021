@@ -25,8 +25,6 @@ fn main() {
         io::stdout().flush().unwrap();
         question = read!("{}\n");
 
-        println!("got: {}", question);
-
         if question != 1 && question != 2 {
             println!("Sorry, try again");
         } else {
