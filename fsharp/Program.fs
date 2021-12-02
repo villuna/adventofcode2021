@@ -5,26 +5,13 @@ type Position = {
     aim: int
 }
 
-type Command =
-    | Up of int
-    | Down of int
-    | Forward of int
-    | Invalid
-
-let newCommand command distance =
-    match command with
-    | "up" -> Up distance
-    | "down" -> Down distance
-    | "forward" -> Forward distance
-    | _ -> Invalid
-
 let applyCommand position command =
     match command with
-    | Up i -> { position with aim = position.aim - i }
-    | Down i -> { position with aim = position.aim + i }
-    | Forward i -> { position with depth = position.depth + position.aim * i
-                                   distance = position.distance + i }
-    | Invalid -> position
+    | ("up", i) -> { position with aim = position.aim - i }
+    | ("down", i) -> { position with aim = position.aim + i }
+    | ("forward", i) -> { position with depth = position.depth + position.aim * i
+                                        distance = position.distance + i }
+    | _ -> position
 
 let readLines filename = Seq.toList (System.IO.File.ReadLines(filename))
 
@@ -34,7 +21,7 @@ let runCommands filename =
 
     lines 
     |> List.map (fun s -> s.Split ' ')
-    |> List.map (fun sl -> newCommand sl.[0] (int sl.[1]))
+    |> List.map (fun sl -> (sl.[0], (int sl.[1])))
     |> List.fold applyCommand initialPosition
 
 let partOne filename =
