@@ -20,13 +20,6 @@ let newCommand command distance =
 
 let applyCommand position command =
     match command with
-    | Up i -> { position with depth = position.depth - i }
-    | Down i -> { position with depth = position.depth + i }
-    | Forward i -> { position with distance = position.distance + i }
-    | Invalid -> position // Do nothing ig
-
-let applyCommandAim position command =
-    match command with
     | Up i -> { position with aim = position.aim - i }
     | Down i -> { position with aim = position.aim + i }
     | Forward i -> { position with depth = position.depth + position.aim * i
@@ -35,25 +28,22 @@ let applyCommandAim position command =
 
 let readLines filename = Seq.toList (System.IO.File.ReadLines(filename))
 
-let getProduct position = position.depth * position.distance
-
-let runCommands filename commandFn  =
+let runCommands filename =
     let lines = readLines filename
     let initialPosition = { depth = 0; distance = 0; aim = 0 }
 
     lines 
     |> List.map (fun s -> s.Split ' ')
     |> List.map (fun sl -> newCommand sl.[0] (int sl.[1]))
-    |> List.fold commandFn initialPosition
-
-let aimPosition position = 
-    { position with depth = position.depth * position.distance }
+    |> List.fold applyCommand initialPosition
 
 let partOne filename =
-    runCommands filename applyCommand |> getProduct
+    let finalPos = runCommands filename
+    finalPos.aim * finalPos.distance
 
 let partTwo filename =
-    runCommands filename applyCommandAim |> getProduct
+    let finalPos = runCommands filename
+    finalPos.depth * finalPos.distance
 
 [<EntryPoint>]
 let main argv = 
