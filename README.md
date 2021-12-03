@@ -7,3 +7,4 @@ These are the languages I solved each day in (for reference)
 
 1. Rust
 2. C++ and F#
+3. Rust
