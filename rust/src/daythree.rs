@@ -24,13 +24,10 @@ fn part_one(contents: String) {
 
     let num_bits = splits[0].len();
 
-    let digits = splits.iter()
-        .fold(vec![0; num_bits], |acc, elem| {
-            acc.iter().zip(elem.iter())
-                .map(|(count, c)| count + c)
-                .collect::<Vec<u32>>()
-        }) .iter()
-        .map(|count| 2 * count >= splits.len() as u32)
+    let digits = (0..num_bits)
+        .map(|i| splits.iter().map(move |s| s[i]).collect::<Vec<u32>>())
+        .map(|vec| vec.iter().sum())
+        .map(|count: u32| 2 * count >= splits.len() as u32)
         .collect::<Vec<bool>>();
 
     let max = usize::from_str_radix(&digits.iter()
