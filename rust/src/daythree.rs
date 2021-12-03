@@ -15,9 +15,41 @@ pub fn day_three(part: usize, filename: String) {
 }
 
 fn part_one(contents: String) {
+    let splits: Vec<Vec<u32>> = contents.split("\n")
+        .filter(|s| !s.is_empty())
+        .map(|s| s.as_bytes().iter().map(|c| 
+                (*c as char).to_digit(10).expect("not a number!"))
+                .collect::<Vec<u32>>())
+        .collect();
+
+    let num_bits = splits[0].len();
+
+    let digits = splits.iter()
+        .fold(vec![0; num_bits], |acc, elem| {
+            acc.iter().zip(elem.iter())
+                .map(|(count, c)| count + c)
+                .collect::<Vec<u32>>()
+        }) .iter()
+        .map(|count| 2 * count >= splits.len() as u32)
+        .collect::<Vec<bool>>();
+
+    let max = usize::from_str_radix(&digits.iter()
+        .map(|b| format!("{}", *b as usize))
+        .collect::<String>(), 2).unwrap();
+
+    let min = usize::from_str_radix(&digits.iter()
+        .map(|b| format!("{}", !b as usize))
+        .collect::<String>(), 2).unwrap();
+
+    println!("The result is {}", max * min);
+}
+
+#[allow(unused)]
+fn part_one_imperative(contents: String) {
     let splits: Vec<Vec<char>> = contents.split("\n")
         .filter(|s| !s.is_empty())
-        .map(|s| s.as_bytes().iter().map(|c| *c as char).collect::<Vec<char>>())
+        .map(|s| s.as_bytes().iter().map(|c| 
+            (*c as char)).collect::<Vec<char>>())
         .collect();
 
     let num_bits = splits[0].len();
@@ -42,6 +74,7 @@ fn part_one(contents: String) {
         } else {
             println!("zeros == ones????");
         }
+
     }
 
     let max = usize::from_str_radix(&max_str.iter().collect::<String>(), 2)
