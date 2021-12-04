@@ -15,74 +15,36 @@ pub fn day_three(part: usize, filename: String) {
 }
 
 fn part_one(contents: String) {
-    let splits: Vec<Vec<u32>> = contents.split("\n")
+    // Get the digits as a 2-dimensional vector of 0s and 1s:
+    let splits: Vec<Vec<usize>> = contents.split("\n")
         .filter(|s| !s.is_empty())
         .map(|s| s.as_bytes().iter().map(|c| 
-                (*c as char).to_digit(10).expect("not a number!"))
-                .collect::<Vec<u32>>())
+            (*c as char).to_digit(2).expect("not a number!") as usize)
+            .collect::<Vec<usize>>())
         .collect();
 
     let num_bits = splits[0].len();
+    let mut totals = vec![0; num_bits];
 
-    let digits = (0..num_bits)
-        .map(|i| splits.iter().map(move |s| s[i]).collect::<Vec<u32>>())
-        .map(|vec| vec.iter().sum())
-        .map(|count: u32| 2 * count >= splits.len() as u32)
-        .collect::<Vec<bool>>();
-
-    let max = usize::from_str_radix(&digits.iter()
-        .map(|b| format!("{}", *b as usize))
-        .collect::<String>(), 2).unwrap();
-
-    let min = usize::from_str_radix(&digits.iter()
-        .map(|b| format!("{}", !b as usize))
-        .collect::<String>(), 2).unwrap();
-
-    println!("The result is {}", max * min);
-}
-
-#[allow(unused)]
-fn part_one_imperative(contents: String) {
-    let splits: Vec<Vec<char>> = contents.split("\n")
-        .filter(|s| !s.is_empty())
-        .map(|s| s.as_bytes().iter().map(|c| 
-            (*c as char)).collect::<Vec<char>>())
-        .collect();
-
-    let num_bits = splits[0].len();
-    let mut max_str = vec!['0'; num_bits];
-    
+    // Sum up the columns to get totals
     for i in 0..num_bits {
-        let mut zeros = 0;
-        let mut ones = 0;
-
-        for s in splits.iter() {
-            match s[i] {
-                '0' => zeros += 1,
-                '1' => ones += 1,
-                _ => {},
-            }
+        for v in splits.iter() {
+            totals[i] += v[i];
         }
-
-        if zeros > ones {
-            max_str[i] = '0';
-        } else if ones > zeros {
-            max_str[i] = '1';
-        } else {
-            println!("zeros == ones????");
-        }
-
     }
 
-    let max = usize::from_str_radix(&max_str.iter().collect::<String>(), 2)
-        .unwrap();
+    let mut gamma = 0;
+    let mut epsilon = 0;
 
-    let min = usize::from_str_radix(&max_str.iter()
-        .map(|c| match c { '0' => '1', '1' => '0', _ => 'x' })
-        .collect::<String>(), 2)
-        .unwrap();
+    for i in 0..num_bits {
+        if totals[num_bits - i - 1] * 2 >= splits.len() {
+            gamma += 2usize.pow(i as u32);
+        } else {
+            epsilon += 2usize.pow(i as u32);
+        }
+    }
 
-    println!("The answer is {}", min * max);
+    println!("The result is {}", gamma * epsilon);
 }
 
 fn part_two(contents: String) {
@@ -151,4 +113,37 @@ fn part_two(contents: String) {
         .unwrap();
 
     println!("The answer is {}", o2 * co2);
+}
+
+
+#[allow(unused)]
+fn part_one_iter(contents: String) {
+    // Collect the data into a vector of rows, each row being a vector of
+    // digits in the row.
+    let splits: Vec<Vec<u32>> = contents.split("\n")
+        .filter(|s| !s.is_empty())
+        .map(|s| s.as_bytes().iter().map(|c| 
+                (*c as char).to_digit(10).expect("not a number!"))
+                .collect::<Vec<u32>>())
+        .collect();
+
+    let num_bits = splits[0].len();
+
+    // Turn this vector of rows into its associated vector of columns, and sum
+    // up each of these columns.
+    let digits = (0..num_bits)
+        .map(|i| splits.iter().map(move |s| s[i]).collect::<Vec<u32>>())
+        .map(|vec| vec.iter().sum())
+        .map(|count: u32| 2 * count >= splits.len() as u32)
+        .collect::<Vec<bool>>();
+
+    let max = usize::from_str_radix(&digits.iter()
+        .map(|b| format!("{}", *b as usize))
+        .collect::<String>(), 2).unwrap();
+
+    let min = usize::from_str_radix(&digits.iter()
+        .map(|b| format!("{}", !b as usize))
+        .collect::<String>(), 2).unwrap();
+
+    println!("The result is {}", max * min);
 }

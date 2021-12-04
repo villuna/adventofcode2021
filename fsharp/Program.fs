@@ -1,40 +1,15 @@
-﻿[<Struct>]
-type Position = {
-    depth: int
-    distance: int
-    aim: int
-}
+﻿open DayTwo
 
-let applyCommand position command =
-    match command with
-    | ("up", i) -> { position with aim = position.aim - i }
-    | ("down", i) -> { position with aim = position.aim + i }
-    | ("forward", i) -> { position with depth = position.depth + position.aim * i
-                                        distance = position.distance + i }
-    | _ -> position
-
-let readLines filename = Seq.toList (System.IO.File.ReadLines(filename))
-
-let runCommands filename =
-    let lines = readLines filename
-    let initialPosition = { depth = 0; distance = 0; aim = 0 }
-
-    lines 
-    |> List.map (fun s -> s.Split ' ')
-    |> List.map (fun sl -> (sl.[0], (int sl.[1])))
-    |> List.fold applyCommand initialPosition
-
-let partOne filename =
-    let finalPos = runCommands filename
-    finalPos.aim * finalPos.distance
-
-let partTwo filename =
-    let finalPos = runCommands filename
-    finalPos.depth * finalPos.distance
+let functions day =
+    match day with
+    | 2 -> dayTwo
+    | _ -> (fun a b -> printfn "Error: Invalid day")
 
 [<EntryPoint>]
 let main argv = 
-    let filename = "../input/day2.txt"
-    partOne filename |> printfn "%d" 
-    partTwo filename |> printfn "%d"
+    let dayFn = functions (int argv.[0])
+    let part = int argv.[1]
+    let filename = argv.[2]
+
+    dayFn filename part
     0
