@@ -5,15 +5,6 @@ open Core
 type Point = int * int
 type Line = Point * Point
 
-(*
-Unoptimized, bad way of solving day 5. The better way (which uses more RAM
-but like not much) would be to create an actual board of points and plot
-each line on the board.
-
-This solution checks each pair of lines on the board and calculates their
-intersection points, and counts the number of unique ones.
-*)
-
 // Functions for parsing lines from file
 let pointFromString (str:string) =
     let splits = str.Split(",")
@@ -25,10 +16,6 @@ let lineFromStrings (strs:string[]) =
 let linesFromFile filename =
     readLines filename 
     |> List.map (fun s -> lineFromStrings (s.Split(" -> ")))
-
-// This could probably go into Core soon but I wrote it for this
-// Generates a list of all the unordered pairs of a list 
-// (excluding pairs of an element with itself i.e. (x,x))
 
 // Flattens a list 1 level. E.g. [[1;2];[3;4]] -> [1;2;3;4]
 let flatten = List.fold (@) []
