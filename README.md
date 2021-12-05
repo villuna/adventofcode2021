@@ -9,3 +9,4 @@ These are the languages I solved each day in (for reference)
 2. C++ and F#
 3. Rust
 4. Rust
+5. F#
