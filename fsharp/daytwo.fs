@@ -1,5 +1,7 @@
 module DayTwo
 
+open Core
+
 [<Struct>]
 type Position = {
     depth: int
@@ -14,8 +16,6 @@ let applyCommand position command =
     | ("forward", i) -> { position with depth = position.depth + position.aim * i
                                         distance = position.distance + i }
     | _ -> position
-
-let readLines filename = Seq.toList (System.IO.File.ReadLines(filename))
 
 let runCommands filename =
     let lines = readLines filename

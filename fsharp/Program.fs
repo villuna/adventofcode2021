@@ -1,8 +1,10 @@
 ﻿open DayTwo
+open DayFive
 
 let functions day =
     match day with
     | 2 -> dayTwo
+    | 5 -> dayFive
     | _ -> (fun a b -> printfn "Error: Invalid day")
 
 [<EntryPoint>]
