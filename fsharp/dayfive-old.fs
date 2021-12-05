@@ -29,6 +29,10 @@ let linesFromFile filename =
 // This could probably go into Core soon but I wrote it for this
 // Generates a list of all the unordered pairs of a list 
 // (excluding pairs of an element with itself i.e. (x,x))
+let rec unorderedPairs (lst: 'a list) =
+    match lst with
+    | [_] | [] -> []
+    | x::xs -> (List.map (fun y -> (x, y)) xs) @ (unorderedPairs xs)
 
 // Flattens a list 1 level. E.g. [[1;2];[3;4]] -> [1;2;3;4]
 let flatten = List.fold (@) []
@@ -61,6 +65,15 @@ let lineRange line =
         let range2 = bounds b d
         List.zip range1 range2
 
+let pointsOfIntersection (lines: Line * Line) =
+    let line1 = lineRange (fst lines)
+    let line2 = lineRange (snd lines)
+
+    line1
+    |> List.map (fun p1 -> List.filter (fun p2 -> p2 = p1) line2)
+    |> List.filter (fun lst -> lst <> [])
+    |> flatten
+
 let generalSolution filename part =
     let tautology = fun x -> true
 
@@ -69,12 +82,13 @@ let generalSolution filename part =
 
     linesFromFile filename
     |> List.filter filter
-    |> List.map lineRange
+    |> unorderedPairs 
+    |> List.map pointsOfIntersection
+    |> List.filter (fun lst -> lst <> [])
     |> flatten
     |> List.countBy id
-    |> List.filter (fun tuple -> snd tuple > 1)
     |> List.length
-    
+
 let dayFive filename part =
     match part with
     | 1 | 2 -> generalSolution filename part |> printfn "%d"
