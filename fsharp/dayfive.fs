@@ -61,7 +61,7 @@ let generalSolution filename part =
     |> List.countBy id
     |> List.filter (fun tuple -> snd tuple > 1)
     |> List.length
-    
+
 let dayFive filename part =
     match part with
     | 1 | 2 -> generalSolution filename part |> printfn "%d"
