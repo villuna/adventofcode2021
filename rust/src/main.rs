@@ -1,11 +1,10 @@
 mod dayone;
 mod daythree;
 mod dayfour;
+mod dayseven;
 
 use text_io::read;
 use std::io::{self, Write};
-
-const DAYS: [usize; 3] = [1, 3, 4];
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -19,11 +18,6 @@ fn main() {
         io::stdout().flush().unwrap();
 
         day = read!("{}\n");
-
-        if !DAYS.contains(&day) {
-            println!("I haven't solved that one yet :P");
-            return;
-        }
 
         loop {
             print!("Enter the question (1 or 2): ");
@@ -51,6 +45,7 @@ fn main() {
         1 => dayone::day_one(question, filename),
         3 => daythree::day_three(question, filename),
         4 => dayfour::day_four(question, filename),
-        _ => {},
+        7 => dayseven::day_seven(question, filename),
+        _ => println!("I haven't solved that day yet :P"),
     }
 }
