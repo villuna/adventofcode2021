@@ -2,6 +2,7 @@ mod dayone;
 mod daythree;
 mod dayfour;
 mod dayseven;
+mod dayeight;
 
 use text_io::read;
 use std::io::{self, Write};
@@ -39,13 +40,13 @@ fn main() {
     io::stdout().flush().unwrap();
     let filename: String = read!("{}\n");
 
-
     // TODO: Use closures or something to make this nicer
     match day {
         1 => dayone::day_one(question, filename),
         3 => daythree::day_three(question, filename),
         4 => dayfour::day_four(question, filename),
         7 => dayseven::day_seven(question, filename),
+        8 => dayeight::day_eight(question, filename),
         _ => println!("I haven't solved that day yet :P"),
     }
 }
