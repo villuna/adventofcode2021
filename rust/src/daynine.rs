@@ -2,10 +2,15 @@ use std::fs::File;
 use std::io::Read;
 use std::collections::HashMap;
 
+use raylib::prelude::*;
+
+const scale: i32 = 10;
+
 pub fn day_nine(part: usize, filename: String) {
     let mut file = File::open(filename).unwrap();
     let mut contents = String::new();
 
+    
     file.read_to_string(&mut contents).unwrap();
 
     if part == 1 {
@@ -36,7 +41,6 @@ fn part_one(contents: String) {
                 .all(|(x, y)| grid[x][y] > grid[i as usize][j as usize]);
 
             if is_low {
-                println!("({}, {}): {} is low", i, j, grid[i as usize][j as usize]);
                 sum += grid[i as usize][j as usize] + 1;
             }
         }
@@ -84,6 +88,14 @@ fn part_two(contents: String) {
             .collect::<Vec<u32>>()
         )
         .collect::<Vec<Vec<u32>>>();
+
+    let width = grid.len() as i32;
+    let height = grid[0].len() as i32;
+
+    let (mut rl, thread) = raylib::init()
+        .size(width * scale, height * scale)
+        .title("woooo yeah baby advent of code oooowwwuuuoooohh  im groovin")
+        .build();
     
     let mut basins: HashMap<(usize, usize), Vec<(usize, usize)>> = HashMap::new();
 
@@ -112,4 +124,40 @@ fn part_two(contents: String) {
     let answer = sizes.iter().rev().take(3).product::<usize>();
 
     println!("answer is {}", answer);
+
+    let mut pallette = (1..11)
+        .map(|i| (i * (255 / 10)) as u8)
+        .map(|i| Color::color_from_hsv(0.0, 0.0, i as f32 / 255.0))
+        .collect::<Vec<Color>>();
+
+    pallette[9] = Color::RED;
+
+    /*
+    // RGB enabled
+    let colour_pallette = |x: f32| 
+        (1..11).map(|i| (i * (255 / 10)) as u8)
+               .map(|i| Color::color_from_hsv(x, 1.0, i as f32 / 255.0))
+               .collect::<Vec<Color>>();
+    */
+
+    //let mut theta = 0.0;
+
+    while !rl.window_should_close() {
+        if rl.is_key_pressed(KeyboardKey::KEY_F2) {
+            rl.take_screenshot(&thread, "day9.png");
+        }
+
+        let mut d = rl.begin_drawing(&thread);
+
+        d.clear_background(Color::WHITE);
+        d.draw_text("Hello, world!", 12, 12, 20, Color::BLACK);
+
+        for i in 0..width {
+            for j in 0..height {
+                d.draw_rectangle(j * scale, i * scale, scale, scale, pallette[grid[i as usize][j as usize] as usize]);
+            }
+        }
+
+        //theta += 0.1;
+    }
 }
