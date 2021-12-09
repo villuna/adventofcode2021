@@ -8,7 +8,7 @@ pub fn day_one(part: usize, filename: String) {
     file.read_to_string(&mut contents).unwrap();
 
     if part == 1 {
-        part_one(contents);    
+        part_one(contents);
     } else {
         part_two(contents);
     }
@@ -28,7 +28,8 @@ fn part_one(contents: String) {
 
     // That solution is good but this is epic rust mode
 
-    let count: i32 = contents.split("\n")
+    let count: i32 = contents
+        .split("\n")
         .filter_map(|s| s.parse::<i32>().ok())
         .collect::<Vec<i32>>()
         .windows(2)
@@ -39,7 +40,8 @@ fn part_one(contents: String) {
 }
 
 fn part_two(contents: String) {
-    let count: i32 = contents.split("\n")
+    let count: i32 = contents
+        .split("\n")
         .filter_map(|s| s.parse::<i32>().ok())
         .collect::<Vec<i32>>()
         .windows(3)

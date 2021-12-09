@@ -1,6 +1,6 @@
+use std::collections::HashSet;
 use std::fs::File;
 use std::io::Read;
-use std::collections::HashSet;
 
 #[derive(Debug)]
 struct Board(Vec<Vec<(u8, bool)>>);
@@ -13,12 +13,15 @@ struct Bingo {
 
 impl Board {
     fn from_string(string: String) -> Board {
-        let board: Vec<Vec<(u8, bool)>> = string.split("\n")
-            .map(|s| s.to_string()
-                .split(" ")
-                .filter_map(|s| u8::from_str_radix(s, 10).ok())
-                .map(|num| (num, false))
-                .collect::<Vec<(u8, bool)>>())
+        let board: Vec<Vec<(u8, bool)>> = string
+            .split("\n")
+            .map(|s| {
+                s.to_string()
+                    .split(" ")
+                    .filter_map(|s| u8::from_str_radix(s, 10).ok())
+                    .map(|num| (num, false))
+                    .collect::<Vec<(u8, bool)>>()
+            })
             .filter(|v| !v.is_empty())
             .collect();
 
@@ -28,7 +31,7 @@ impl Board {
     fn update(&mut self, num_called: u8) {
         for (num, status) in self.0.iter_mut().flatten() {
             if *num == num_called {
-                *status = true; 
+                *status = true;
             }
         }
     }
@@ -54,21 +57,18 @@ impl Board {
 
 impl Bingo {
     fn from_string(contents: String) -> Bingo {
-        let mut splits = contents.split("\n\n").map(|s| s.to_string())
-            .into_iter();
+        let mut splits = contents.split("\n\n").map(|s| s.to_string()).into_iter();
 
-        let numbers: Vec<u8> = splits.next().unwrap().split(",")
+        let numbers: Vec<u8> = splits
+            .next()
+            .unwrap()
+            .split(",")
             .filter_map(|num| u8::from_str_radix(num, 10).ok())
             .collect();
 
-        let boards: Vec<Board> = splits.map(
-            |s| Board::from_string(s.to_string())
-            ).collect();
+        let boards: Vec<Board> = splits.map(|s| Board::from_string(s.to_string())).collect();
 
-        Bingo {
-            boards,
-            numbers,
-        }
+        Bingo { boards, numbers }
     }
 }
 
@@ -79,7 +79,7 @@ pub fn day_four(part: usize, filename: String) {
     file.read_to_string(&mut contents).unwrap();
 
     if part == 1 {
-        part_one(contents);    
+        part_one(contents);
     } else {
         part_two(contents);
     }
@@ -102,7 +102,11 @@ fn part_one(contents: String) {
         }
     }
 
-    let sum = winner.unwrap().0.iter().flatten()
+    let sum = winner
+        .unwrap()
+        .0
+        .iter()
+        .flatten()
         .filter_map(|(num, status)| {
             println!("{:?}", (num, status));
             if *status {
@@ -110,7 +114,8 @@ fn part_one(contents: String) {
             } else {
                 Some(*num as usize)
             }
-        }).collect::<Vec<usize>>();
+        })
+        .collect::<Vec<usize>>();
 
     let sum: usize = sum.iter().sum();
 
@@ -144,7 +149,11 @@ fn part_two(contents: String) {
         }
     }
 
-    let sum = loser.unwrap().0.iter().flatten()
+    let sum = loser
+        .unwrap()
+        .0
+        .iter()
+        .flatten()
         .filter_map(|(num, status)| {
             println!("{:?}", (num, status));
             if *status {
@@ -152,7 +161,8 @@ fn part_two(contents: String) {
             } else {
                 Some(*num as usize)
             }
-        }).collect::<Vec<usize>>();
+        })
+        .collect::<Vec<usize>>();
 
     let sum: usize = sum.iter().sum();
 

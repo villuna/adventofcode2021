@@ -12,11 +12,11 @@ pub fn day_eight(part: usize, filename: String) {
     } else {
         part_two(contents);
     }
-
 }
 
 fn part_one(contents: String) {
-    let answer = contents.split("\n")
+    let answer = contents
+        .split("\n")
         .filter(|s| !s.is_empty())
         .map(|s| s.split(" | ").collect::<Vec<&str>>()[1])
         .map(|s| s.split(" ").collect::<Vec<&str>>())
@@ -29,34 +29,44 @@ fn part_one(contents: String) {
 }
 
 fn part_two(contents: String) {
-    let lines = contents.split("\n")
+    let lines = contents
+        .split("\n")
         .filter(|s| !s.is_empty())
         .map(|s| s.split(" | ").collect::<Vec<&str>>())
         .collect::<Vec<Vec<&str>>>();
 
-    let patterns = lines.iter().map(|v| v[0].split(" ").collect::<Vec<&str>>())
+    let patterns = lines
+        .iter()
+        .map(|v| v[0].split(" ").collect::<Vec<&str>>())
         .map(parse_pattern)
         .collect::<Vec<[&str; 10]>>();
 
-    let answer: usize = lines.into_iter().map(|v| v[1].split(" ").collect::<Vec<&str>>())
+    let answer: usize = lines
+        .into_iter()
+        .map(|v| v[1].split(" ").collect::<Vec<&str>>())
         .enumerate()
         .map(|(i, v)| {
-            v.iter().map(|s| {
-                let mut num = 0;
+            v.iter()
+                .map(|s| {
+                    let mut num = 0;
 
-                for j in 0..10 {
-                    let mut pattern = patterns[i][j].chars();
-                    let mut digit = s.chars();
+                    for j in 0..10 {
+                        let mut pattern = patterns[i][j].chars();
+                        let mut digit = s.chars();
 
-                    if pattern.all(|c| s.contains(c)) && digit.all(|c| patterns[i][j].contains(c)) {
-                        num = j;
-                        break;
+                        if pattern.all(|c| s.contains(c))
+                            && digit.all(|c| patterns[i][j].contains(c))
+                        {
+                            num = j;
+                            break;
+                        }
                     }
-                }
 
-                num
-            }).collect::<Vec<usize>>()
-        }).map(|v| 1000 * v[0] + 100 * v[1] + 10 * v[2] + v[3])
+                    num
+                })
+                .collect::<Vec<usize>>()
+        })
+        .map(|v| 1000 * v[0] + 100 * v[1] + 10 * v[2] + v[3])
         .sum();
 
     println!("The answer is {}", answer);

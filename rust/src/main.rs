@@ -1,12 +1,12 @@
-mod dayone;
-mod daythree;
-mod dayfour;
-mod dayseven;
 mod dayeight;
+mod dayfour;
 mod daynine;
+mod dayone;
+mod dayseven;
+mod daythree;
 
-use text_io::read;
 use std::io::{self, Write};
+use text_io::read;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
