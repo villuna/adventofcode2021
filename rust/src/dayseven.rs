@@ -32,7 +32,7 @@ fn part_one(contents: String) {
 }
 
 fn part_two(contents: String) {
-    let mut numbers = contents.split("\n").nth(0).unwrap()
+    let numbers = contents.split("\n").nth(0).unwrap()
         .split(",")
         .filter_map(|s| i32::from_str_radix(s, 10).ok())
         .collect::<Vec<i32>>();
