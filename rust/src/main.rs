@@ -4,6 +4,7 @@ mod daynine;
 mod dayone;
 mod dayseven;
 mod daythree;
+mod dayten;
 
 use std::io::{self, Write};
 use text_io::read;
@@ -49,6 +50,7 @@ fn main() {
         7 => dayseven::day_seven(question, filename),
         8 => dayeight::day_eight(question, filename),
         9 => daynine::day_nine(question, filename),
+        10 => dayten::day_ten(question, filename),
         _ => println!("I haven't solved that day yet :P"),
     }
 }
