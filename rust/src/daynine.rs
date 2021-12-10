@@ -177,7 +177,13 @@ fn part_two_raylib(contents: String) {
 
         for i in 0..width {
             for j in 0..height {
-                d.draw_rectangle(j * SCALE, i * SCALE, SCALE, SCALE, pallette[grid[i as usize][j as usize] as usize]);
+                d.draw_rectangle(
+                    j * SCALE,
+                    i * SCALE,
+                    SCALE,
+                    SCALE,
+                    pallette[grid[i as usize][j as usize] as usize],
+                );
             }
         }
 
@@ -192,7 +198,13 @@ fn part_two_raylib(contents: String) {
         }
 
         for &(i, j) in low_points.iter() {
-            d.draw_rectangle(j as i32 * SCALE, i as i32 * SCALE, SCALE, SCALE, blue_pallette[grid[i][j] as usize]);
+            d.draw_rectangle(
+                j as i32 * SCALE,
+                i as i32 * SCALE,
+                SCALE,
+                SCALE,
+                blue_pallette[grid[i][j] as usize],
+            );
         }
 
         if let Some(&(i, j)) = stack.last() {
@@ -206,7 +218,6 @@ fn part_two_raylib(contents: String) {
         }
 
         if tick == 0 {
-
         } else {
             timer += 1;
             if timer == tick {

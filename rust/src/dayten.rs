@@ -1,6 +1,6 @@
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-use std::collections::HashMap;
 
 pub fn day_ten(part: usize, filename: String) {
     let mut file = File::open(filename).unwrap();
@@ -16,8 +16,9 @@ pub fn day_ten(part: usize, filename: String) {
     }
 }
 
-fn part_one(contents: String) -> (Vec<String>, u32){
-    let lines = contents.split('\n')
+fn part_one(contents: String) -> (Vec<String>, u32) {
+    let lines = contents
+        .split('\n')
         .filter(|s| !s.is_empty())
         .collect::<Vec<&str>>();
 
@@ -28,7 +29,6 @@ fn part_one(contents: String) -> (Vec<String>, u32){
     'outer: for line in lines {
         let mut stack = Vec::new();
         let opening = ['(', '[', '{', '<'];
-        let closing = [')', ']', '}', '>'];
 
         let mut map = HashMap::new();
         map.insert('(', ')');
@@ -39,7 +39,7 @@ fn part_one(contents: String) -> (Vec<String>, u32){
         for c in line.chars() {
             if opening.contains(&c) {
                 stack.push(c);
-            } else if closing.contains(&c) {
+            } else {
                 if let Some(open_char) = stack.pop() {
                     if *map.get(&open_char).unwrap() != c {
                         sum += points(c);
@@ -49,8 +49,6 @@ fn part_one(contents: String) -> (Vec<String>, u32){
                     sum += points(c);
                     continue 'outer;
                 }
-            } else {
-                panic!("found non-bracket char \"{}\" in a line", c);
             }
         }
 

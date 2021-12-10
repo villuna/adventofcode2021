@@ -3,8 +3,8 @@ mod dayfour;
 mod daynine;
 mod dayone;
 mod dayseven;
-mod daythree;
 mod dayten;
+mod daythree;
 
 use std::io::{self, Write};
 use text_io::read;
