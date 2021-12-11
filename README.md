@@ -15,3 +15,4 @@ These are the languages I solved each day in (for reference)
 8. Rust
 9. Rust (With an animation for part 2!)
 10. Rust (again)
+11. F#
