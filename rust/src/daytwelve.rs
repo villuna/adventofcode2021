@@ -12,7 +12,7 @@ pub fn day_twelve(part: usize, filename: String) {
     println!("The answer is {}", graph.get_paths(part).len());
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 struct Graph<'a>(HashMap<&'a str, HashSet<&'a str>>);
 
 fn is_lower(string: &str) -> bool {
@@ -87,10 +87,7 @@ impl<'a> Graph<'a> {
         res
     }
 
-    fn incident_vertices(&self, node: &'a str) -> Option<Vec<&'a str>> {
-        match self.0.get(&node) {
-            Some(set) => Some(set.iter().map(|&s| s).collect::<Vec<&'a str>>()),
-            None => None,
-        }
+    fn incident_vertices(&self, node: &'a str) -> Option<&HashSet<&'a str>> {
+        self.0.get(&node)
     }
 }
