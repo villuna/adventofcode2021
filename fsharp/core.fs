@@ -15,3 +15,4 @@ let rec unorderedPairs (lst: 'a list) =
     | [_] | [] -> []
     | x::xs -> (List.map (fun y -> (x, y)) xs) @ (unorderedPairs xs)
 
+let flatten lst = List.fold (@) [] lst
