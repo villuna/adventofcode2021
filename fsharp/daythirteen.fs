@@ -44,15 +44,13 @@ let displayGrid grid =
     let maxX = grid |> List.map fst |> List.max
     let maxY = grid |> List.map snd |> List.max
 
-    printfn "%A" (maxX, maxY)
-
     [for i in 0 .. maxY -> [for j in 0 .. maxX -> if contains (j, i) grid then "#" else "."]]
     |> List.iter (fun lst -> printfn "%s" (String.concat "" lst))
 
 let partOne filename =
     let grid, folds = parseGrid filename
 
-    applyFold grid folds.[0] |> List.length |> printfn "%d"
+    applyFold grid folds.[0] |> List.length |> printfn "The answer is %d"
 
 let partTwo filename =
     let grid, folds = parseGrid filename
