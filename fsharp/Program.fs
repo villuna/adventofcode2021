@@ -3,6 +3,7 @@ open DayFive
 open DaySix
 open DaySeven
 open DayEleven
+open DayThirteen
 
 let functions day =
     match day with
@@ -11,7 +12,8 @@ let functions day =
     | 6 -> daySix
     | 7 -> daySeven
     | 11 -> dayEleven
-    | _ -> (fun a b -> printfn "Error: Invalid day \"%d\"" day)
+    | 13 -> dayThirteen
+    | _ -> (fun _ _ -> printfn "Error: Invalid day \"%d\"" day)
 
 [<EntryPoint>]
 let main argv = 

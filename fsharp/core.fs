@@ -16,3 +16,5 @@ let rec unorderedPairs (lst: 'a list) =
     | x::xs -> (List.map (fun y -> (x, y)) xs) @ (unorderedPairs xs)
 
 let flatten lst = List.fold (@) [] lst
+
+let contains item lst = (List.filter (fun elem -> elem = item) lst |> List.length) <> 0
