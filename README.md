@@ -18,3 +18,4 @@ These are the languages I solved each day in (for reference)
 11. F#
 12. Rust
 13. F# (very nice challenge)
+14. Rust
